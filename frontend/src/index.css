@@ -1,0 +1,15 @@
+/* Global styles for smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ensure consistent box-sizing */
+* {
+  box-sizing: border-box;
+}
+
+/* Reset margin and padding for consistent styling */
+body {
+  margin: 0;
+  padding: 0;
+}

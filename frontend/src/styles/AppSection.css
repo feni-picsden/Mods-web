@@ -1,0 +1,93 @@
+/* AppDownloadSection.css */
+.app-download-container {
+  background-color: white;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.app-download-heading {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #1C1A1A;
+  font-family: 'Minecraft Bold';
+}
+
+.app-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.store-badge {
+  width: 200px;
+  height: 70px;
+  object-fit: contain;
+  transition: transform 0.2s;
+}
+
+.store-badge:hover {
+  transform: scale(1.05);
+}
+
+
+/* Tablet styles */
+@media screen and (max-width: 1024px) {
+  .app-download-container {
+    padding: 2.5rem 1rem;
+  }
+  
+  .app-download-heading {
+    font-size: 1.6rem;
+    margin-bottom: 1.3rem;
+  }
+  
+  .app-buttons {
+    gap: 1.2rem;
+  }
+  
+  .store-badge {
+    width: 180px;
+    height: 60px;
+  }
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+  .app-download-container {
+    padding: 2rem 1rem;
+  }
+  
+  .app-download-heading {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  
+  .app-buttons {
+    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .store-badge {
+    width: 160px;
+    height: 55px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .app-download-container {
+    padding: 1.5rem 0.5rem;
+  }
+  
+  .app-download-heading {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .store-badge {
+    width: 140px;
+    height: 50px;
+  }
+}

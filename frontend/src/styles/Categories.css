@@ -1,0 +1,155 @@
+.categories {
+  padding: 20px 0;
+}
+
+.categories h2 {
+  color: #fff;
+  font-size: 26px;
+  font-weight: 300;
+}
+
+.category-list-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-top: 10px;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.category-two-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: max-content;
+  width: 100%;
+}
+
+.category-line {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: start;
+  gap: 30px;
+  min-width: max-content;
+}
+
+/* Custom scrollbar for category container */
+.category-list-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.category-list-container::-webkit-scrollbar-track {
+  background: #333;
+  border-radius: 3px;
+}
+
+.category-list-container::-webkit-scrollbar-thumb {
+  background: #4caf50;
+  border-radius: 3px;
+}
+
+.category-list-container::-webkit-scrollbar-thumb:hover {
+  background: #45a049;
+}
+
+.category-btn {
+  background-color: #2C2C2C;
+  color: #fff;
+  border: none;
+  font-size: 18px;
+  width: 15%;
+  padding: 0.6em 1.2em;
+  font-family: "Minecraft";
+  color: #DFDFDF;
+  cursor: pointer;
+  font-weight: 400;
+  white-space: nowrap;
+  min-width: 120px;
+  transition: all 0.3s ease;
+}
+.category-btn h3{
+  font-size: 18px;
+  font-weight: 400;
+  color: #DFDFDF;
+}
+
+.category-btn:hover {
+  background-color: #4CAF50;
+  transform: translateY(-2px);
+}
+
+/* Tablet styles */
+@media screen and (max-width: 1024px) {
+  .categories {
+    padding: 15px 0;
+  }
+  
+  .categories h2 {
+    font-size: 24px;
+  }
+  
+  .category-btn {
+    font-size: 16px;
+    padding: 0.5em 1em;
+    min-width: 110px;
+  }
+  
+  .category-line {
+    gap: 20px;
+  }
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+  .categories {
+    padding: 12px 0;
+  }
+  
+  .categories h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+  
+  .category-btn {
+    font-size: 15px;
+    padding: 0.4em 0.8em;
+    min-width: 100px;
+    width: auto;
+  }
+  
+  .category-line {
+    gap: 15px;
+  }
+  
+  .category-two-lines {
+    gap: 12px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .categories {
+    padding: 10px 0;
+  }
+  
+  .categories h2 {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  
+  .category-btn {
+    font-size: 14px;
+    padding: 0.3em 0.7em;
+    min-width: 90px;
+  }
+  
+  .category-line {
+    gap: 12px;
+  }
+  
+  .category-two-lines {
+    gap: 10px;
+  }
+  
+  .category-list-container::-webkit-scrollbar {
+    height: 4px;
+  }
+}

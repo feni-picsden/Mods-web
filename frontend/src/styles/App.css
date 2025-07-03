@@ -1,0 +1,124 @@
+/* Global styles for smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: "Minecraft";
+  src: url("/Fonts/1_Minecraft\ Regular1.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Minecraft ten";
+  src: url("/Fonts/MINECRAFT TEN VGORE.TTF") format("truetype");
+}
+@font-face {
+  font-family: "Minecraft Bold";
+  src: url("/Fonts/3_Minecraft\ Bold1.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+body {
+  font-family: Minecraft;
+  font-size: 20px;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+/* Responsive font sizes */
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 0; /* Remove any top padding */
+}
+
+.footer p {
+  margin: 5px 0;
+}
+
+/* Button Styles */
+.minecraft-btn {
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-family: "Minecraft", sans-serif;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.minecraft-btn:hover {
+  background-color: #4cae4c;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Responsive container */
+@media screen and (max-width: 1024px) {
+  .container {
+    padding: 0 15px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 0 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 0 8px;
+  }
+}
+
+/* Title Styles */
+.minecraft-title {
+  font-family: "Minecraft", sans-serif;
+  margin-bottom: 20px;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: #5cb85c;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: #4cae4c;
+}

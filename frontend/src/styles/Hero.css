@@ -1,0 +1,968 @@
+/* Hero Container */
+.hero-container {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  font-family: "Minecraft", sans-serif;
+  font-size: 24px;
+  color: #333;
+}
+
+/* Carousel */
+.carousel {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Slides Container with Dynamic Transform */
+.slides-container {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  transform: translateX(calc(50vw - 400px - var(--current-index) * 800px));
+  /* transition: transform 0.5s ease-in-out; */
+}
+
+.slide {
+  flex-shrink: 0;
+  width: 800px;
+  max-width: 95vw;
+  min-width: 400px;
+  opacity: 0.6;
+  transform: scale(0.85);
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  position: relative;
+  margin: 0;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: scale(1);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+}
+
+/* Disable slide transitions during position jumps */
+.slides-container.no-transition .slide {
+  transition: none !important;
+}
+
+.slides-container.no-transition .slide-info {
+  transition: none !important;
+}
+
+.slide-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px);
+  /* opacity: 0.6; Optional: to darken background */
+  background-image: var(--bg-image);
+}
+
+.slide-overlay {
+  background-color: #00000080;
+  width: 100%;
+  z-index: 1;
+  height: 100%;
+  padding: 0 9%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide-content {
+  width: 60%;
+  height: 100%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slide-title {
+  font-family: "Minecraft Bold", sans-serif;
+  font-size: 1.4rem;
+  margin: 0 0 5px 0;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.slide-description {
+  font-size: 0.9rem;
+  color: #ddd;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.slide-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.slide-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+  transition: opacity 0.3s ease;
+}
+
+.slide-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  color: #fff;
+  z-index: 2;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.slide.active .slide-info {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.carousel-bottom-controls {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  display: flex;
+  z-index: 2;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 5%;
+}
+
+.carousel-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+  gap: 10px;
+}
+
+.arrow {
+  background: transparent;
+  border-radius: 50%;
+ 
+  display: flex;
+  border: none;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+
+.arrow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.arrow img {
+  width: 11px;
+  height: 13px;
+}
+
+.dots {
+  display: flex;
+  gap: 10px;
+}
+
+.dot {
+  width: 13px;
+  height: 13px;
+  border: 2px solid #fff;
+  border-radius: 2px;
+  background: transparent;
+  /* border: none; */
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.dot:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.7);
+  transform: scale(1.1);
+}
+
+.dot.active {
+  background: #fff;
+}
+
+.dot:disabled {
+  cursor: not-allowed;
+}
+
+.slide-right {
+  flex: 1;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.slide-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.slide:hover .slide-image {
+  transform: scale(1.05);
+}
+
+.margin-bottom{
+  margin-bottom: 30px;
+}
+
+.categories-section {
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-family: "Minecraft";
+  font-size: 24px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+}
+
+.categories-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.category-card {
+  flex: 0 0 calc(33.333% - 15px);
+  background-color: #2e2e2e;
+  background-image: url("https://www.transparenttextures.com/patterns/minecraft-stone.png");
+  padding: 15px;
+  border-radius: 6px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+}
+
+.category-card h3 {
+  font-family: "Minecraft", sans-serif;
+  color: white;
+  font-size: 18px;
+}
+
+/* Category Mods Section */
+.mods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.mod-card:hover {
+  transform: translateY(-5px);
+  cursor: pointer;
+}
+
+.mod-image-container {
+  height: 180px;
+  overflow: hidden;
+}
+
+.mod-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.mod-card:hover .mod-image {
+  transform: scale(1.05);
+} 
+
+.mod-info {
+  padding: 15px 0;
+}
+/* 
+@media screen and (max-width: 1400px) {
+  .slide-image {
+    width: 100%;
+    height: 280px;
+  }
+
+  .slide-title {
+    font-size: 28px;
+  }
+} */
+/* 
+@media screen and (max-width: 1024px) {
+  .carousel {
+    height: 70vh;
+  }
+  
+  .slide-overlay {
+    padding: 0 6%;
+  }  
+  
+  .slide-content {
+    width: 55%;
+  }
+  
+  .slide-right {
+    width: 45%;
+  }
+  
+  .slide-image {
+    width: 100%;
+    height: 240px;
+  }
+  
+  .slide-title {
+    font-size: 1.2rem;
+  }
+  
+  .slide-description {
+    font-size: 0.85rem;
+  }
+
+  .category-card {
+    flex: 0 0 calc(50% - 10px);
+  }
+
+  .slides-container {
+    transform: translateX(calc(50vw - 350px - var(--current-index) * 700px));
+  }
+
+  .slide {
+    width: 700px;
+    max-width: 90vw;
+    margin: 0;
+  }
+} */
+
+@media screen and (max-width: 768px) {
+
+  .slide-background {
+    filter: blur(3px);
+  }
+
+  .slide-overlay {
+    flex-direction: column;
+    padding: 40px 4%;
+    text-align: center;
+    gap: 30px;
+  }
+
+  .slide-content {
+    width: 100%;
+    text-align: center;
+    order: 2;
+  }
+  
+  .slide-right {
+    width: 100%;
+    order: 1;
+    justify-content: center;
+  }
+  
+  .slide-image {
+    width: 80vw;
+    /* margin: 0 5vw; */
+  }
+
+  .slide-title {
+    font-size: 1.1rem;
+    width: 100%;
+  }
+
+  .slide-description {
+    font-size: 0.85rem;
+    width: 100%;
+  }
+
+  .category-card {
+    flex: 0 0 100%;
+  }
+/* 
+  .slides-container {
+    transform: translateX(calc(50vw - 300px - var(--current-index) * 600px));
+  } */
+
+  .hero-main-title {
+    font-size: 2.2rem;
+    padding-top: 40px;
+  }
+  .hero-main-subtitle {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+  .slide {
+    width: 600px;
+    max-width: 85vw;
+    margin: 0;
+    min-width: 300px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .carousel {
+    height: 50vh;
+  }
+  
+  .slide-overlay {
+    padding: 30px 3%;
+    gap: 20px;
+  }
+
+  .slide-content {
+    width: 100%;
+  }
+  
+  .slide-image {
+    width: 95%;
+    height: 200px;
+  }
+
+  .slide-title {
+    font-size: 1rem;
+  }
+
+  .slide-description {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  
+  .arrow {
+    font-size: 16px;
+    width: 25px;
+    height: 25px;
+  }
+  
+  .dot {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .dots {
+    gap: 6px;
+  }
+
+  .slides-container {
+    transform: translateX(calc(50vw - 200px - var(--current-index) * 400px));
+  }
+
+  .slide {
+    width: 400px;
+    max-width: 80vw;
+    margin: 0;
+    min-width: 250px;
+  }
+}
+
+/* ===== SKELETON STYLES ===== */
+
+/* Hero Title Skeleton */
+.hero-title-skeleton {
+  width: 60%;
+  height: 40px;
+  margin-bottom: 16px;
+}
+
+/* Hero Description Skeleton */
+.hero-description-skeleton {
+  height: 18px;
+  margin-bottom: 8px;
+}
+
+.hero-description-skeleton.line-1 {
+  width: 100%;
+}
+
+.hero-description-skeleton.line-2 {
+  width: 90%;
+}
+
+.hero-description-skeleton.line-3 {
+  width: 75%;
+}
+
+.hero-description-skeleton.line-4 {
+  width: 85%;
+}
+
+/* Hero Image Skeleton */
+.hero-image-skeleton {
+  width: 400px;
+  height: 250px;
+  border-radius: 8px;
+}
+
+/* Navigation Button Skeleton */
+.nav-button-skeleton {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.carousel-navigation {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  padding: 15px;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.3s ease;
+}
+
+.carousel-navigation:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.carousel-navigation.prev {
+  left: -60px;
+}
+
+.carousel-navigation.next {
+  right: -60px;
+}
+
+/* Carousel Info Text Skeleton */
+.carousel-title-skeleton {
+  width: 250px;
+  height: 32px;
+  margin-bottom: 20px;
+}
+
+.carousel-description-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.carousel-text-skeleton {
+  height: 16px;
+}
+
+.carousel-text-skeleton.downloads {
+  width: 60px;
+}
+
+.carousel-text-skeleton.likes {
+  width: 50px;
+}
+
+.carousel-text-skeleton.version {
+  width: 40px;
+}
+
+.carousel-stats-container {
+  display: flex;
+  gap: 8px;
+}
+
+.carousel-stats-flex {
+  flex: 1;
+}
+
+.carousel-stat-skeleton {
+  width: 80px;
+  height: 32px;
+  border-radius: 16px;
+}
+
+.carousel-buttons-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.carousel-button-skeleton {
+  width: 120px;
+  height: 40px;
+  border-radius: 20px;
+  margin: 0 10px;
+}
+
+/* ===== END SKELETON STYLES ===== */
+
+/* ===== SHIMMER ANIMATION ===== */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, #333 25%, #444 37%, #333 63%);
+  background-size: 400px 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ===== HERO CONTAINER ===== */
+.hero-section {
+  background-image: url('../assets/default_header_image.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* background-color: rgb(24, 24, 24); */
+  text-align: center;
+  padding: 40px 0 0px 0;
+  position: relative;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* background: rgba(0, 0, 0, 0.5); */
+  /* backdrop-filter: blur(8px); */
+}
+
+.hero-main-title, .hero-main-subtitle, .carousel {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-main-title {
+  font-size: 2.8rem;
+  font-weight: bold;
+  color: #fff;
+  padding-top: 70px;
+  font-family: "Minecraft Bold", sans-serif;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.hero-main-subtitle {
+  font-size: 1.1rem;
+  color: #fff;
+  margin-bottom: 40px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+  padding: 0 20px;
+}
+
+/* ===== THREE GRID LAYOUT ===== */
+.hero-three-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-grid-item {
+  background: #2a2a2a;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #444;
+}
+
+.hero-grid-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.hero-grid-image-container {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-grid-image-wrapper {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+}
+
+.hero-grid-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.hero-grid-item:hover .hero-grid-image {
+  transform: scale(1.05);
+}
+
+.hero-grid-content {
+  padding: 25px 20px;
+  text-align: left;
+}
+
+.hero-grid-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 12px;
+  font-family: "Minecraft Bold", sans-serif;
+}
+
+.hero-grid-description {
+  font-size: 0.95rem;
+  color: #bbb;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ===== SKELETON STYLES ===== */
+.hero-title-skeleton {
+  width: 400px;
+  height: 48px;
+  margin: 0 auto 20px auto;
+  border-radius: 8px;
+}
+
+.hero-subtitle-skeleton {
+  width: 600px;
+  height: 20px;
+  margin: 0 auto 50px auto;
+  border-radius: 4px;
+}
+
+.hero-grid-image-skeleton {
+  width: 100%;
+  height: 250px;
+  border-radius: 8px 8px 0 0;
+}
+
+.hero-grid-title-skeleton {
+  width: 80%;
+  height: 24px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+}
+
+.hero-grid-description-skeleton {
+  width: 100%;
+  height: 40px;
+  border-radius: 4px;
+}
+
+/* ===== TRENDING MODS SKELETON (kept for compatibility) ===== */
+.trending-mods-section {
+  padding: 60px 0;
+  background-color: #1a1a1a;
+}
+
+.trending-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.trending-mods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.trending-mod-card {
+  background: #2a2a2a;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #444;
+}
+
+.trending-mod-info {
+  padding: 20px;
+}
+
+.carousel-title-skeleton {
+  width: 300px;
+  height: 32px;
+  margin: 0 auto 40px auto;
+  border-radius: 8px;
+}
+
+.carousel-description-skeleton {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.carousel-text-skeleton {
+  height: 16px;
+  border-radius: 3px;
+}
+
+.carousel-text-skeleton.downloads {
+  width: 80px;
+}
+
+.carousel-text-skeleton.likes {
+  width: 60px;
+}
+
+.carousel-text-skeleton.version {
+  width: 50px;
+}
+
+.carousel-stats-container {
+  display: flex;
+  gap: 15px;
+}
+
+.carousel-stat-skeleton {
+  width: 100px;
+  height: 32px;
+  border-radius: 6px;
+}
+
+.carousel-buttons-container {
+  text-align: center;
+}
+
+.carousel-button-skeleton {
+  width: 150px;
+  height: 40px;
+  border-radius: 20px;
+  margin: 0 auto;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+
+.hero-default-image-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 40px auto 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 32px rgba(0,0,0,0.18);
+}
+
+.hero-default-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  border-radius: 16px;
+}
+
+@media (max-width: 968px) {
+  .hero-default-image {
+    height: 160px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-default-image-container {
+    max-width: 98vw;
+    margin: 30px auto 0 auto;
+  }
+  .hero-default-image {
+    height: 100px;
+    border-radius: 10px;
+  }
+}
+
+.slide-item-skeleton {
+  width: 800px;
+  max-width: 95vw;
+  min-width: 400px;
+  height: 200px;
+  border-radius: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .slides-container {
+    transform: translateX(calc(50vw - 350px - var(--current-index) * 700px));
+  }
+  .slide {
+    width: 700px;
+    max-width: 90vw;
+  }
+  .slide-title {
+    font-size: 1.2rem;
+  }
+  .slide-description {
+    font-size: 0.85rem;
+  }
+  .slide-item-skeleton {
+    width: 700px;
+    max-width: 90vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .slides-container {
+    transform: translateX(calc(50vw - 300px - var(--current-index) * 600px));
+  }
+  .slide {
+    width: 600px;
+    max-width: 85vw;
+  }
+  .slide-info {
+    padding: 15px;
+  }
+  .slide-title {
+    font-size: 1.1rem;
+  }
+  .slide-item-skeleton {
+    width: 600px;
+    max-width: 85vw;
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .slides-container {
+    transform: translateX(calc(50vw - 200px - var(--current-index) * 400px));
+  }
+  .slide {
+    width: 400px;
+    max-width: 80vw;
+  }
+  .slide-item-skeleton {
+    width: 400px;
+    max-width: 80vw;
+    height: 130px;
+  }
+}
