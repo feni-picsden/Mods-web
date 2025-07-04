@@ -464,10 +464,6 @@
   text-transform: capitalize;
 }
 
-.loader-item:hover {
-  background-color: #444;
-  transform: translateY(-1px);
-}
 
 .categories-section {
   margin-bottom: 20px;

@@ -6,11 +6,34 @@ import previousIcon from "../assets/previous.png";
 import nextIcon from "../assets/next.png";
 
 const HeroSkeleton = () => (
-  <div className="hero-section">
-    <div className="hero-title-skeleton shimmer" />
-    <div className="hero-subtitle-skeleton shimmer" />
-    <div className="carousel-skeleton">
-      <div className="slide-item-skeleton shimmer" />
+  <div className="hero-container">
+    <div className="hero-section">
+      <div className="hero-main-title shimmer" style={{ height: '40px', width: '80%', maxWidth: '600px', marginBottom: '20px' }}></div>
+      <div className="hero-main-subtitle-container">
+        <div className="hero-main-subtitle shimmer" style={{ height: '80px', width: '90%', maxWidth: '800px', marginBottom: '30px' }}></div>
+      </div>
+      <div className="carousel">
+        <div className="slides-container">
+          <div className="slide">
+            <div className="slide-link">
+              <div className="slide-image shimmer" style={{ height: '400px', width: '100%', borderRadius: '12px' }}></div>
+              <div className="slide-info">
+                <div className="slide-title shimmer" style={{ height: '24px', width: '60%', marginTop: '15px', marginBottom: '10px' }}></div>
+                <div className="slide-description shimmer" style={{ height: '16px', width: '80%' }}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="carousel-controls">
+          <div className="arrow prev shimmer" style={{ width: '40px', height: '40px', borderRadius: '50%' }}></div>
+          <div className="dots">
+            {Array.from({ length: 3 }, (_, i) => (
+              <div key={i} className="dot shimmer" style={{ width: '12px', height: '12px', margin: '0 5px', borderRadius: '50%' }}></div>
+            ))}
+          </div>
+          <div className="arrow next shimmer" style={{ width: '40px', height: '40px', borderRadius: '50%' }}></div>
+        </div>
+      </div>
     </div>
   </div>
 );

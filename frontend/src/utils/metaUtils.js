@@ -20,24 +20,14 @@ export const updateMetaTags = (title, description, image = '') => {
     meta.content = content;
   };
 
-  // Basic meta description
   updateMetaTag('description', description);
 
-  // Open Graph meta tags
   updateMetaTag('og:title', title, true);
   updateMetaTag('og:description', description, true);
   updateMetaTag('og:type', 'website', true);
-  if (image) {
-    updateMetaTag('og:image', image, true);
-  }
   updateMetaTag('og:site_name', 'CurseForge', true);
 
-  // Twitter Card meta tags
-  updateMetaTag('twitter:card', 'summary_large_image');
   updateMetaTag('twitter:title', title);
   updateMetaTag('twitter:description', description);
-  if (image) {
-    updateMetaTag('twitter:image', image);
-  }
   updateMetaTag('twitter:site', '@CurseForge');
 }; 

@@ -495,9 +495,7 @@ function ModsPage() {
 
   const handleSearchExecution = async (query) => {
     const trimmedQuery = query.trim();
-
     const newParams = new URLSearchParams(searchParams);
-
     if (!trimmedQuery) {
       setDebouncedSearchQuery("");
       newParams.delete("search");
@@ -505,7 +503,6 @@ function ModsPage() {
       setSearchParams(newParams);
       return;
     }
-
     try {
       await storeSearchKeyword(trimmedQuery);
       setDebouncedSearchQuery(trimmedQuery);
@@ -586,7 +583,6 @@ function ModsPage() {
     const newParams = new URLSearchParams(searchParams);
     newParams.set("page", page.toString());
     setSearchParams(newParams);
-    // Add smooth scroll to top
     window.scrollTo({
       top: 0,
       behavior: 'smooth'

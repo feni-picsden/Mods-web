@@ -97,7 +97,6 @@ function Home() {
   useEffect(() => {
     setCanonicalTag(buildCanonicalUrl("/"));
 
-    // Set meta tags for homepage
     updateMetaTags(
       "ModsCraft - Download Minecraft Mods, Maps & Resource Packs",
       "Download the latest Minecraft mods, maps, and resource packs. Enhance your Minecraft experience with our curated collection of high-quality modifications."

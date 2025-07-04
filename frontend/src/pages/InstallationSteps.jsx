@@ -10,7 +10,6 @@ import { updateMetaTags } from '../utils/metaUtils';
 
 const InstallationSteps = () => {
   const [activeStep, setActiveStep] = useState(1);
-
   useEffect(() => {
     setCanonicalTag(buildCanonicalUrl('/installation-steps'));
     updateMetaTags(
@@ -61,7 +60,6 @@ const InstallationSteps = () => {
             <h1 className="main-title">To install Mods</h1>
             <p className="main-subtitle">first install the app!</p>
           </div>
-
           <div className="steps-container">
             <div className="step-item main-step">
               <div className="step-circle active">

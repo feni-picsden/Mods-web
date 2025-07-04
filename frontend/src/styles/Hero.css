@@ -560,9 +560,6 @@
   margin: 0 10px;
 }
 
-/* ===== END SKELETON STYLES ===== */
-
-/* ===== SHIMMER ANIMATION ===== */
 @keyframes shimmer {
   0% {
     background-position: -200px 0;
@@ -573,12 +570,61 @@
 }
 
 .shimmer {
-  background: linear-gradient(90deg, #333 25%, #444 37%, #333 63%);
-  background-size: 400px 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
+  background: #f6f7f8;
+  background-image: linear-gradient(
+    to right,
+    #f6f7f8 0%,
+    #edeef1 20%,
+    #f6f7f8 40%,
+    #f6f7f8 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 4px;
 }
 
-/* ===== HERO CONTAINER ===== */
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+/* Hero Skeleton Styles */
+.hero-section .hero-main-title.shimmer,
+.hero-section .hero-main-subtitle.shimmer {
+  display: block;
+  border-radius: 8px;
+}
+
+.hero-section .slide-image.shimmer {
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+.hero-section .slide-info .shimmer {
+  border-radius: 6px;
+}
+
+.hero-section .carousel-controls .arrow.shimmer {
+  opacity: 0.7;
+}
+
+.hero-section .carousel-controls .dot.shimmer {
+  display: inline-block;
+  opacity: 0.7;
+}
+
+.hero-title-skeleton,
+.hero-subtitle-skeleton,
+.carousel-skeleton,
+.slide-item-skeleton {
+  display: none;
+}
+
 .hero-section {
   background-image: url('../assets/default_header_image.jpg');
   background-size: cover;

@@ -585,7 +585,7 @@ function ModDetail() {
 
             {mod.Loaders && (
               <div className="mod-section mod-loaders-section">
-                <h3 className="section-title">Mod Loaders</h3>
+                <h3 className="section-title">Available for</h3>
                 <div className="loaders-list">
                   {mod.Loaders.split(",").map((loader, index) => (
                     <div key={index} className="loader-item">
