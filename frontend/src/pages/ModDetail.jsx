@@ -3,16 +3,20 @@ import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import "../styles/ModDetail.css";
 import DownloadButton from "../components/DownloadButton";
-import {
-  FaChevronRight,
-} from "react-icons/fa";
+import { FaChevronRight } from "react-icons/fa";
+import { updateMetaTags } from '../utils/metaUtils';
 
 import appStore from "../assets/appstore.png";
 import playStore from "../assets/playstore.png";
 import downloadIcon from "../assets/Downlaod_icon.png";
 import heartIcon from "../assets/heart_icon.png";
 import heartBorderIcon from "../assets/heart_border_icon.png";
-import { createModUrl, createCategorySlug, decodeSlug } from "../utils/urlUtils";
+import {
+  createModUrl,
+  createCategorySlug,
+  decodeSlug,
+  pluralizeCategory,
+} from "../utils/urlUtils";
 import { setCanonicalTag, buildCanonicalUrl } from "../utils/canonicalUtils";
 import { formatCategoryName, formatModTitle } from "../utils/textUtils";
 
@@ -53,8 +57,7 @@ const RelatedModsSkeleton = () => {
 const PageSkeleton = () => {
   return (
     <div className="mod-detail-container">
-      <div className="mod-banner">
-      </div>
+      <div className="mod-banner"></div>
 
       <div className="mod-header-dark">
         <div className="breadcrumb-container">
@@ -144,11 +147,26 @@ const PageSkeleton = () => {
               </div>
             </div>
 
+            <div className="mod-section mod-loaders-section">
+              <div className="loaders-section-title-skeleton shimmer"></div>
+              <div className="loaders-list-skeleton">
+                {Array.from({ length: 2 }, (_, index) => (
+                  <div
+                    key={index}
+                    className="loader-tag-skeleton shimmer"
+                  ></div>
+                ))}
+              </div>
+            </div>
+
             <div className="mod-section categories-section">
               <div className="categories-section-title-skeleton shimmer"></div>
               <div className="categories-list-skeleton">
                 {Array.from({ length: 6 }, (_, index) => (
-                  <div key={index} className="category-tag-skeleton shimmer"></div>
+                  <div
+                    key={index}
+                    className="category-tag-skeleton shimmer"
+                  ></div>
                 ))}
               </div>
             </div>
@@ -187,16 +205,16 @@ function ModDetail() {
       setError(null);
       setLikeStatus(null);
       setActiveImage(0);
-      
+
       try {
         let response;
-        
+
         if (category && modTitle) {
           response = await axios.post(
             "http://192.168.29.13:4000/api/mods/getModBySlug",
-            { 
-              category: decodeURIComponent(category), 
-              modTitle: decodeURIComponent(modTitle) 
+            {
+              category: decodeURIComponent(category),
+              modTitle: decodeURIComponent(modTitle),
             },
             {
               headers: {
@@ -225,18 +243,27 @@ function ModDetail() {
           const modName = response.data.mod.Name;
           const modCategory = response.data.mod.Category;
           document.title = `${modName} - ${modCategory} for Minecraft`;
-          
+
           if (category && modTitle) {
             setCanonicalTag(buildCanonicalUrl(`/all/${category}/${modTitle}`));
           } else if (id) {
             setCanonicalTag(buildCanonicalUrl(`/mod/${id}`));
           }
-          
+
           if (
             response.data.mod.SubImages &&
             response.data.mod.SubImages.length > 0
           ) {
             setActiveImage(0);
+          }
+
+          // Update meta tags with dynamic mod information including image
+          if (response.data.mod) {
+            updateMetaTags(
+              `${response.data.mod.Name} - Minecraft Mod Download | ModsCraft`,
+              `Download ${response.data.mod.Name} mod for Minecraft. ${response.data.mod.Description?.slice(0, 150)}...`,
+              response.data.mod.DisplayImage // Pass the display image for social sharing
+            );
           }
         } else {
           setError("Failed to load mod details");
@@ -274,11 +301,11 @@ function ModDetail() {
 
   const handleLike = async () => {
     if (!mod) return;
-    
+
     try {
       if (likeStatus === "liked") {
         setLikeStatus(null);
-        
+
         setMod((prev) => ({
           ...prev,
           Likes: String(Math.max(0, parseInt(prev.Likes) - 1)),
@@ -303,7 +330,7 @@ function ModDetail() {
         }
       } else {
         setLikeStatus("liked");
-        
+
         setMod((prev) => ({
           ...prev,
           Likes: String(parseInt(prev.Likes) + 1),
@@ -369,12 +396,13 @@ function ModDetail() {
         day: "numeric",
       });
     }
-  
+
     const numTimestamp = parseInt(timestamp);
-    const date = numTimestamp.toString().length <= 10 
-      ? new Date(numTimestamp * 1000) 
-      : new Date(numTimestamp);
-  
+    const date =
+      numTimestamp.toString().length <= 10
+        ? new Date(numTimestamp * 1000)
+        : new Date(numTimestamp);
+
     return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
@@ -384,8 +412,7 @@ function ModDetail() {
 
   return (
     <div className="mod-detail-container">
-      <div className="mod-banner">
-      </div>
+      <div className="mod-banner"></div>
 
       <div className="mod-header-dark">
         <div className="breadcrumb-container">
@@ -398,14 +425,16 @@ function ModDetail() {
               All
             </Link>
             <FaChevronRight className="breadcrumb-separator" />
-                          <Link
-                to={`/all/${createCategorySlug(mod.Category)}`}
-                className="breadcrumb-item"
-              >
-                {formatCategoryName(mod.Category)}
-              </Link>
+            <Link
+              to={`/all/${createCategorySlug(mod.Category)}`}
+              className="breadcrumb-item"
+            >
+              {pluralizeCategory(mod.Category)}
+            </Link>
             <FaChevronRight className="breadcrumb-separator" />
-            <span className="breadcrumb-item current">{formatModTitle(mod.Name)}</span>
+            <span className="breadcrumb-item current">
+              {formatModTitle(mod.Name)}
+            </span>
           </div>
         </div>
       </div>
@@ -443,7 +472,12 @@ function ModDetail() {
 
                   {mod.Category && (
                     <div className="mod-category-display">
-                      <Link to={`/all/${createCategorySlug(mod.Category)}`} className="category-tag">{formatCategoryName(mod.Category)}</Link>
+                      <Link
+                        to={`/all/${createCategorySlug(mod.Category)}`}
+                        className="category-tag"
+                      >
+                        {formatCategoryName(mod.Category)}
+                      </Link>
                     </div>
                   )}
                 </div>
@@ -460,10 +494,7 @@ function ModDetail() {
                   {likeStatus === "liked" ? (
                     <img src={heartIcon} alt="heart" />
                   ) : (
-                    <img
-                      src={heartBorderIcon}
-                      alt="heart"
-                    />
+                    <img src={heartBorderIcon} alt="heart" />
                   )}
                 </button>
               </div>
@@ -552,6 +583,19 @@ function ModDetail() {
               </div>
             </div>
 
+            {mod.Loaders && (
+              <div className="mod-section mod-loaders-section">
+                <h3 className="section-title">Mod Loaders</h3>
+                <div className="loaders-list">
+                  {mod.Loaders.split(",").map((loader, index) => (
+                    <div key={index} className="loader-item">
+                      {loader.trim()}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="mod-section categories-section mod-detail-category">
               <h3 className="section-title">Categories</h3>
               <div className="categories-list">
@@ -559,11 +603,9 @@ function ModDetail() {
                   <div
                     key={category.id}
                     className="category-item"
-                                          onClick={() =>
-                        navigate(
-                          `/all/${createCategorySlug(category.Name)}`
-                        )
-                      }
+                    onClick={() =>
+                      navigate(`/all/${createCategorySlug(category.Name)}`)
+                    }
                   >
                     {formatCategoryName(category.Name)}
                   </div>
@@ -576,13 +618,23 @@ function ModDetail() {
         {loading ? (
           <RelatedModsSkeleton />
         ) : (
-          relatedMods && relatedMods.length > 0 && (
+          relatedMods &&
+          relatedMods.length > 0 && (
             <div className="related-mods-section">
-              <h3 className="section-title">Related Mods</h3>
+              <h3 className="section-title">
+                Related {pluralizeCategory(mod.Category)}
+              </h3>
               <div className="related-mods-grid">
                 {relatedMods.map((relatedMod) => (
                   <div key={relatedMod.id} className="related-mod-card">
-                    <Link to={relatedMod.Category && relatedMod.Name ? createModUrl(relatedMod.Category, relatedMod.Name) : `/mod/${relatedMod.id}`} className="related-mod-link">
+                    <Link
+                      to={
+                        relatedMod.Category && relatedMod.Name
+                          ? createModUrl(relatedMod.Category, relatedMod.Name)
+                          : `/mod/${relatedMod.id}`
+                      }
+                      className="related-mod-link"
+                    >
                       <div className="related-mod-image">
                         <img
                           src={cleanImageUrl(relatedMod.DisplayImage)}
@@ -593,7 +645,9 @@ function ModDetail() {
                       <div className="related-mod-info">
                         <h4 className="related-mod-title">{relatedMod.Name}</h4>
                         <div className="related-mod-category">
-                          <span className="category-tag-small">{formatCategoryName(relatedMod.Category)}</span>
+                          <span className="category-tag-small">
+                            {formatCategoryName(relatedMod.Category)}
+                          </span>
                         </div>
                         <div className="related-mod-stats">
                           <span className="stat-item-small">
@@ -602,7 +656,9 @@ function ModDetail() {
                               alt="downloads"
                               className="stat-icon-small"
                             />
-                            {parseInt(relatedMod.DownloadCount).toLocaleString()}
+                            {parseInt(
+                              relatedMod.DownloadCount
+                            ).toLocaleString()}
                           </span>
                           <span className="stat-item-small">
                             <img
@@ -614,7 +670,9 @@ function ModDetail() {
                           </span>
                         </div>
                         <div className="related-mod-version">
-                          <span className="version-badge-small">{relatedMod.Version}</span>
+                          <span className="version-badge-small">
+                            {relatedMod.Version}
+                          </span>
                         </div>
                       </div>
                     </Link>

@@ -3,10 +3,15 @@ import { Link } from "react-router-dom";
 import "../styles/PrivacyPolicy.css";
 import {FaChevronRight } from "react-icons/fa";
 import { setCanonicalTag, buildCanonicalUrl } from "../utils/canonicalUtils";
+import { updateMetaTags } from '../utils/metaUtils';
 
 function PrivacyPolicy() {
   useEffect(() => {
     setCanonicalTag(buildCanonicalUrl('/privacy-policy'));
+    updateMetaTags(
+      "Privacy Policy - ModsCraft",
+      "Learn about how ModsCraft handles and protects your personal information and data while using our Minecraft mod platform."
+    );
   }, []);
 
   return (

@@ -1,4 +1,12 @@
 import db from '../../config/db.js';
+import metaInfo from '../../config/meta.json' assert { type: "json" };
+
+const getMetaInfo = (category) => {
+  if (category && metaInfo.categories[category]) {
+    return metaInfo.categories[category];
+  }
+  return metaInfo.categories.mods; // default meta info
+};
 
 export default async function getPaginatedMods(req, res) {
   try {
@@ -9,6 +17,9 @@ export default async function getPaginatedMods(req, res) {
       category = null,
       search = null 
     } = req.body;
+    
+    // Get meta information based on category
+    const meta = getMetaInfo(category);
     
     const offset = (page - 1) * limit;
     
@@ -65,7 +76,7 @@ export default async function getPaginatedMods(req, res) {
     
     // Fetch paginated data
     const [mods] = await db.promise().query(
-      `SELECT id, Name, Category, Category1, SubCategory, Version, DisplayImage, Title_for_path, DownloadCount, Likes, CreatedDate, UpdatedDate, Description 
+      `SELECT id, Name,Loaders, Category, Category1, SubCategory, Version, DisplayImage, Title_for_path, DownloadCount, Likes, CreatedDate, UpdatedDate, Description 
        ${baseQuery} 
        ${orderBy} 
        LIMIT ? OFFSET ?`,
@@ -76,6 +87,7 @@ export default async function getPaginatedMods(req, res) {
     const formattedMods = mods.map(mod => ({
       ...mod,
       id: String(mod.id),
+      Loaders: String(mod.Loaders),
       Category: String(mod.Category1),
       DownloadCount: String(mod.DownloadCount),
       Likes: String(mod.Likes || 0),
@@ -94,7 +106,8 @@ export default async function getPaginatedMods(req, res) {
         sortBy,
         category,
         search
-      }
+      },
+      meta
     });
   } catch (err) {
     console.error('❌ Error fetching paginated mods:', err);

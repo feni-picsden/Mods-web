@@ -1,4 +1,24 @@
 import db from "../../config/db.js";
+import metaInfo from '../../config/meta.json' assert { type: "json" };
+
+const getMetaInfo = (category) => {
+  const cleanCategory = category.startsWith('minecraft-') ? category.substring(10) : category;
+  
+  if (cleanCategory && metaInfo.categories[cleanCategory]) {
+    return metaInfo.categories[cleanCategory];
+  }
+    const plural = cleanCategory.endsWith('s') ? cleanCategory : cleanCategory + 's';
+  const singular = cleanCategory.endsWith('s') ? cleanCategory.slice(0, -1) : cleanCategory;
+  
+  if (metaInfo.categories[plural]) {
+    return metaInfo.categories[plural];
+  }
+  if (metaInfo.categories[singular]) {
+    return metaInfo.categories[singular];
+  }
+  
+  return metaInfo.categories.mods; 
+};
 
 export async function filterModsByCategoryAndSubcategory(req, res) {
   try {
@@ -14,6 +34,9 @@ export async function filterModsByCategoryAndSubcategory(req, res) {
     if (!category) {
       return res.status(400).json({ status: 400, message: "Category is required" });
     }
+
+    // Get meta information based on category
+    const meta = getMetaInfo(category);
 
     // Decode slug
     const slug = category;
@@ -146,7 +169,8 @@ export async function filterModsByCategoryAndSubcategory(req, res) {
         category,
         subcategories,
         search
-      }
+      },
+      meta
     });
   } catch (err) {
     console.error("Error filtering mods:", err);

@@ -1,4 +1,3 @@
-
 /**
  * Capitalizes the first letter of each word in a string
  * @param {string} text - The text to capitalize
@@ -55,4 +54,23 @@ export const formatModTitle = (modTitle) => {
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');
+};
+
+/**
+ * Compares two category names, handling both singular and plural forms
+ * @param {string} category1 - First category name to compare
+ * @param {string} category2 - Second category name to compare
+ * @returns {boolean} - True if the categories match (considering singular/plural forms)
+ */
+export const compareCategoryNames = (category1, category2) => {
+  if (!category1 || !category2) return false;
+  
+  // Convert to lowercase and remove 'minecraft-' prefix
+  const normalizeCategory = (cat) => {
+    cat = cat.toLowerCase().replace('minecraft-', '');
+    // Remove trailing 's' if it exists
+    return cat.endsWith('s') ? cat.slice(0, -1) : cat;
+  };
+  
+  return normalizeCategory(category1) === normalizeCategory(category2);
 }; 

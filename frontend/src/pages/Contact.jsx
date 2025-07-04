@@ -4,6 +4,7 @@ import { FaChevronRight, FaUser, FaEnvelope, FaComment, FaBook } from "react-ico
 import axios from "axios";
 import "../styles/Contact.css";
 import { setCanonicalTag, buildCanonicalUrl } from "../utils/canonicalUtils";
+import { updateMetaTags } from '../utils/metaUtils';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +19,10 @@ const Contact = () => {
 
   useEffect(() => {
     setCanonicalTag(buildCanonicalUrl('/contact'));
+    updateMetaTags(
+      "Contact Us - ModsCraft Support",
+      "Get in touch with ModsCraft team for any questions, support, or feedback about Minecraft mods and resources."
+    );
   }, []);
 
   const handleInputChange = (e) => {

@@ -16,12 +16,23 @@ export const createSlug = (text) => {
 };
 
 /**
+ * Pluralizes a category name if it doesn't already end with 's'
+ * @param {string} category - The category name to pluralize
+ * @returns {string} - Pluralized category name
+ */
+export const pluralizeCategory = (category) => {
+  if (!category) return '';
+  return category.endsWith('s') ? category : category + 's';
+};
+
+/**
  * @param {string} categoryName 
  * @returns {string} 
  */
 export const createCategorySlug = (categoryName) => {
   if (!categoryName) return '';
-  const slug = createSlug(categoryName);
+  const pluralizedCategory = pluralizeCategory(categoryName);
+  const slug = createSlug(pluralizedCategory);
   return `minecraft-${slug}`;
 };
 
@@ -58,6 +69,11 @@ export const decodeSlug = (slug) => {
   let decodedSlug = slug;
   if (slug.startsWith('minecraft-')) {
     decodedSlug = slug.substring(10); // Remove 'minecraft-' prefix
+  }
+  
+  // Remove trailing 's' if present (for category slugs)
+  if (decodedSlug.endsWith('s')) {
+    decodedSlug = decodedSlug.slice(0, -1);
   }
   
   return decodedSlug

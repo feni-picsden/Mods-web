@@ -25,15 +25,19 @@ export async function getModBySlug(req, res) {
     const searchTitle = cleanModTitle.replace(/-/g, '');
     const categorySearch = cleanCategory.replace(/-/g, '');
     
+    // Handle both singular and plural forms of category
+    const categorySearchPlural = categorySearch.endsWith('s') ? categorySearch : categorySearch + 's';
+    const categorySearchSingular = categorySearch.endsWith('s') ? categorySearch.slice(0, -1) : categorySearch;
+    
     const [modRows] = await db.promise().query(
       `SELECT id, Name,Loaders, Category, Category1, SubCategory, DisplayImage, Title_for_path, 
               Price, Version, DownloadCount, Likes, Seen, SubImages, Description, 
               CreatedDate, UpdatedDate
        FROM web_mods_data 
-       WHERE name_slug = ? AND category_slug = ? 
+       WHERE name_slug = ? AND (category_slug = ? OR category_slug = ?)
        AND Name IS NOT NULL AND Name != ""
        LIMIT 1`,
-      [searchTitle.toLowerCase(), categorySearch.toLowerCase()]
+      [searchTitle.toLowerCase(), categorySearchSingular.toLowerCase(), categorySearchPlural.toLowerCase()]
     );
 
     if (modRows.length === 0) {
@@ -58,10 +62,10 @@ export async function getModBySlug(req, res) {
       db.promise().query(
         `SELECT id, Name,Loaders, Category, Category1, SubCategory1, Version, DownloadCount, Likes, DisplayImage, Title_for_path, SubCategory 
          FROM web_mods_data 
-         WHERE category_slug = ? AND id != ? AND Name IS NOT NULL AND DisplayImage IS NOT NULL AND DisplayImage != ""
+         WHERE (category_slug = ? OR category_slug = ?) AND id != ? AND Name IS NOT NULL AND DisplayImage IS NOT NULL AND DisplayImage != ""
          ORDER BY CAST(DownloadCount AS UNSIGNED) DESC 
          LIMIT 5`,
-        [categorySearch.toLowerCase(), mod.id]
+        [categorySearchSingular.toLowerCase(), categorySearchPlural.toLowerCase(), mod.id]
       )
     ]);
 

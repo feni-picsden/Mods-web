@@ -6,12 +6,17 @@ import appStore from "../assets/appstore.png";
 import playStore from "../assets/playstore.png";
 import defaultHeaderImage from "../assets/default_header_image.jpg";
 import { setCanonicalTag, buildCanonicalUrl } from "../utils/canonicalUtils";
+import { updateMetaTags } from '../utils/metaUtils';
 
 const InstallationSteps = () => {
   const [activeStep, setActiveStep] = useState(1);
 
   useEffect(() => {
     setCanonicalTag(buildCanonicalUrl('/installation-steps'));
+    updateMetaTags(
+      "How to Install Minecraft Mods - ModsCraft Guide",
+      "Step-by-step guide on how to install Minecraft mods safely and easily. Learn the proper way to enhance your Minecraft experience."
+    );
   }, []);
 
   const steps = [

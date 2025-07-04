@@ -1,4 +1,5 @@
 import db from '../config/db.js';
+const metaInfo = require('../config/meta.json');
 
 export async function getPaginatedMods(req, res) {
   try {
@@ -125,4 +126,27 @@ export async function downloadMod(req, res) {
     res.status(500).json({ status: 500, message: 'Server Error' });
   }
 }
+
+const getMetaInfo = (category) => {
+  if (category && metaInfo.categories[category]) {
+    return metaInfo.categories[category];
+  }
+  return metaInfo.categories.mods; // default meta info
+};
+
+// Add meta info to your existing response handlers
+exports.getPaginatedMods = async (req, res) => {
+  try {
+    const { category } = req.query;
+    const meta = getMetaInfo(category);
+    const result = await getPaginatedMods(req.query);
+    res.json({
+      ...result,
+      meta
+    });
+  } catch (error) {
+    console.error('Error in getPaginatedMods:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
 

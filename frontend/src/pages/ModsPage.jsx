@@ -5,13 +5,16 @@ import {
   Link,
   useNavigate,
   useParams,
+  useLocation,
 } from "react-router-dom";
 import "../styles/ModsPage.css";
-import { createModUrl, createCategorySlug, decodeSlug } from "../utils/urlUtils";
 import {
-  FaChevronRight,
-  FaChevronDown,
-} from "react-icons/fa";
+  createModUrl,
+  createCategorySlug,
+  decodeSlug,
+  pluralizeCategory,
+} from "../utils/urlUtils";
+import { FaChevronRight, FaChevronDown } from "react-icons/fa";
 import playStore from "../assets/playstore.png";
 import appStore from "../assets/appstore.png";
 import searchIcon from "../assets/Search_icon.png";
@@ -19,7 +22,8 @@ import downloadIcon from "../assets/Downlaod_icon.png";
 import heartIcon from "../assets/heart_icon.png";
 import versionIcon from "../assets/version_icon.png";
 import { setCanonicalTag, buildCanonicalUrl } from "../utils/canonicalUtils";
-import { formatCategoryName } from "../utils/textUtils";
+import { formatCategoryName, compareCategoryNames } from "../utils/textUtils";
+import { updateMetaTags } from '../utils/metaUtils';
 
 const ModItemSkeleton = () => {
   return (
@@ -32,6 +36,9 @@ const ModItemSkeleton = () => {
             <div className="stat-skeleton shimmer"></div>
             <div className="stat-skeleton shimmer"></div>
             <div className="version-skeleton shimmer"></div>
+            <div className="loaders-skeleton">
+              <div className="loaders-label-skeleton shimmer"></div>
+            </div>
           </div>
           <div className="mod-tags-skeleton">
             <div className="tag-skeleton shimmer"></div>
@@ -214,12 +221,15 @@ function ModsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { category: urlCategory } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [mods, setMods] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [modsLoading, setModsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [meta, setMeta] = useState(null);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(
@@ -253,9 +263,11 @@ function ModsPage() {
   // Update page title when category changes
   useEffect(() => {
     if (selectedCategory) {
-      document.title = `${formatCategoryName(selectedCategory)} for Minecraft`;
+      document.title = `${pluralizeCategory(
+        formatCategoryName(selectedCategory)
+      )} for Minecraft`;
     } else {
-      document.title = 'All Minecraft Mods';
+      document.title = "All Minecraft Mods";
     }
   }, [selectedCategory]);
 
@@ -391,7 +403,7 @@ function ModsPage() {
   };
 
   const fetchAllMods = async () => {
-    setLoading(true);
+    setModsLoading(true);
     try {
       const response = await axios.post(
         "http://192.168.29.13:4000/api/mods",
@@ -411,16 +423,20 @@ function ModsPage() {
         setMods(response.data.mods);
         setTotalPages(response.data.totalPages);
         setTotalItems(response.data.totalItems);
+        setMeta(response.data.meta);
+        if (response.data.meta) {
+          updateMetaTags(response.data.meta.title, response.data.meta.description);
+        }
       }
     } catch (error) {
       setError("Failed to load mods");
     } finally {
-      setLoading(false);
+      setModsLoading(false);
     }
   };
 
   const fetchFilteredMods = async () => {
-    setLoading(true);
+    setModsLoading(true);
     try {
       const response = await axios.post(
         "http://192.168.29.13:4000/api/mods/filterModsByCategoryAndSubcategory",
@@ -438,7 +454,6 @@ function ModsPage() {
           },
         }
       );
-
       if (response.data.status === 200) {
         setMods(response.data.mods);
         if (response.data.AllSubcategories) {
@@ -446,16 +461,19 @@ function ModsPage() {
         }
         setTotalPages(response.data.totalPages);
         setTotalItems(response.data.totalItems);
+        setMeta(response.data.meta);
+        if (response.data.meta) {
+          updateMetaTags(response.data.meta.title, response.data.meta.description);
+        }
       }
     } catch (error) {
       setError(
         `Failed to fetch mods for category: ${selectedCategory || "all"}`
       );
     } finally {
-      setLoading(false);
+      setModsLoading(false);
     }
   };
-
   const storeSearchKeyword = async (keyword) => {
     try {
       await axios.post(
@@ -568,9 +586,14 @@ function ModsPage() {
     const newParams = new URLSearchParams(searchParams);
     newParams.set("page", page.toString());
     setSearchParams(newParams);
+    // Add smooth scroll to top
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
-  if (loading && mods.length === 0) {
+  if (loading) {
     return <PageSkeleton />;
   }
 
@@ -605,7 +628,7 @@ function ModsPage() {
               <>
                 <FaChevronRight className="breadcrumb-separator" />
                 <span className="breadcrumb-current">
-                  {formatCategoryName(selectedCategory)}
+                  {pluralizeCategory(formatCategoryName(selectedCategory))}
                 </span>
               </>
             )}
@@ -613,7 +636,8 @@ function ModsPage() {
           <div className="page-title-inline">
             <h1 className="page-title">
               {selectedCategory
-                ?  "Minecraft " + formatCategoryName(selectedCategory) 
+                ? "Minecraft " +
+                  pluralizeCategory(formatCategoryName(selectedCategory))
                 : "All Minecraft Content"}
             </h1>
             <span className="page-subtitle">
@@ -625,7 +649,6 @@ function ModsPage() {
       <div className="mods-main-content">
         <div className="mods-sidebar">
           <div className="sidebar-section">
-            {/* <TestAdBox /> */}
             <h3 className="sidebar-title">Categories</h3>
             <div className="categories-list">
               <div
@@ -639,7 +662,7 @@ function ModsPage() {
                   <div
                     key={category.id}
                     className={`category-item ${
-                      selectedCategory.toLowerCase() === category.Name.toLowerCase().replace('minecraft-', '')
+                      compareCategoryNames(selectedCategory, category.Name)
                         ? "active"
                         : ""
                     }`}
@@ -687,7 +710,11 @@ function ModsPage() {
                 <div className="filter-tags">
                   {selectedCategory && (
                     <div className="filter-tag category-tag">
-                      <span>{formatCategoryName(selectedCategory)}</span>
+                      <span>
+                        {pluralizeCategory(
+                          formatCategoryName(selectedCategory)
+                        )}
+                      </span>
                       <button
                         onClick={() => clearFilters()}
                         className="remove-filter"
@@ -842,7 +869,7 @@ function ModsPage() {
                 </div>
               </div>
 
-              {loading ? (
+              {modsLoading ? (
                 <ModsListSkeleton />
               ) : mods.length === 0 ? (
                 <NoDataFound />
@@ -893,6 +920,22 @@ function ModsPage() {
                                 />
                                 {mod.Version}
                               </span>
+                              {mod.Loaders && (
+                                <span className="stat-item loaders-item">
+                                  <span className="loaders-list-inline">
+                                    {mod.Loaders.split(",").map(
+                                      (loader, index) => (
+                                        <span
+                                          key={index}
+                                          className="loader-badge"
+                                        >
+                                          {loader.trim()}
+                                        </span>
+                                      )
+                                    )}
+                                  </span>
+                                </span>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -912,6 +955,72 @@ function ModsPage() {
                   ))}
                 </div>
               )}
+
+              <div className="pagination-info pagination-end">
+                <span className="page-numbers">
+                  {currentPage > 1 && (
+                    <button
+                      className="page-arrow "
+                      onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                      &lt;
+                    </button>
+                  )}
+
+                  {currentPage > 2 && (
+                    <button
+                      className="page-num"
+                      onClick={() => handlePageChange(1)}
+                    >
+                      1
+                    </button>
+                  )}
+                  {currentPage > 3 && (
+                    <span className="page-ellipsis">...</span>
+                  )}
+
+                  {currentPage > 1 && (
+                    <button
+                      className="page-num"
+                      onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                      {currentPage - 1}
+                    </button>
+                  )}
+
+                  <button className="page-num active">{currentPage}</button>
+
+                  {currentPage < totalPages && (
+                    <button
+                      className="page-num"
+                      onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                      {currentPage + 1}
+                    </button>
+                  )}
+
+                  {currentPage < totalPages - 2 && (
+                    <span className="page-ellipsis">...</span>
+                  )}
+                  {currentPage < totalPages - 1 && (
+                    <button
+                      className="page-num"
+                      onClick={() => handlePageChange(totalPages)}
+                    >
+                      {totalPages}
+                    </button>
+                  )}
+
+                  {currentPage < totalPages && (
+                    <button
+                      className="page-arrow"
+                      onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                      &gt;
+                    </button>
+                  )}
+                </span>
+              </div>
             </div>
 
             {selectedCategory && subcategories.length > 0 && (

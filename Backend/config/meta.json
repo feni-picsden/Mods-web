@@ -1,0 +1,42 @@
+{
+  "pages": {
+    "home": {
+      "title": "ModsCraft - Download Minecraft Mods, Maps & Resource Packs",
+      "description": "Download the latest Minecraft mods, maps, and resource packs. Enhance your Minecraft experience with our curated collection of high-quality modifications."
+    },
+    "contact": {
+      "title": "Contact Us - ModsCraft Support",
+      "description": "Get in touch with ModsCraft team for any questions, support, or feedback about Minecraft mods and resources."
+    },
+    "installation": {
+      "title": "How to Install Minecraft Mods - ModsCraft Guide",
+      "description": "Step-by-step guide on how to install Minecraft mods safely and easily. Learn the proper way to enhance your Minecraft experience."
+    },
+    "privacy": {
+      "title": "Privacy Policy - ModsCraft",
+      "description": "Learn about how ModsCraft handles and protects your personal information and data while using our Minecraft mod platform."
+    },
+    "terms": {
+      "title": "Terms of Service - ModsCraft",
+      "description": "Read our terms of service to understand the rules and guidelines for using ModsCraft's Minecraft mod platform."
+    }
+  },
+  "categories": {
+    "mods": {
+      "title": "Minecraft Mods - Download Free Mods | ModsCraft",
+      "description": "Browse and download thousands of free Minecraft mods. Find mods for building, adventure, combat, and more to enhance your Minecraft experience."
+    },
+    "texture-packs": {
+      "title": "Minecraft Texture Packs - Download Resource Packs | ModsCraft",
+      "description": "Download high-quality Minecraft texture packs and resource packs. Change the look and feel of your Minecraft world with custom textures."
+    },
+    "maps": {
+      "title": "Minecraft Maps - Download Custom Maps | ModsCraft",
+      "description": "Explore a vast collection of Minecraft maps. Download adventure maps, parkour maps, puzzle maps, and more for endless entertainment."
+    },
+    "shaders": {
+      "title": "Minecraft Shaders - Download Shader Packs | ModsCraft",
+      "description": "Enhance Minecraft graphics with our collection of shader packs. Download shaders for realistic lighting, shadows, and visual effects."
+    }
+  }
+} 

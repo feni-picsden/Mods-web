@@ -438,6 +438,37 @@
 }
 
 /* Categories Section */
+/* Mod Loaders Section */
+.mod-loaders-section {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid #4d4d4d;
+}
+
+.loaders-list {
+  padding: 15px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.loader-item {
+  color: #e5e5e5;
+  background-color: #333;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #4d4d4d;
+  transition: background-color 0.3s, transform 0.2s;
+  text-transform: capitalize;
+}
+
+.loader-item:hover {
+  background-color: #444;
+  transform: translateY(-1px);
+}
+
 .categories-section {
   margin-bottom: 20px;
 }
@@ -976,6 +1007,28 @@
 .about-detail-skeleton.version {
   width: 100px;
 }
+
+/* Mod Loaders Skeleton */
+.loaders-section-title-skeleton {
+  width: 120px;
+  height: 20px;
+  margin-bottom: 16px;
+}
+
+.loaders-list-skeleton {
+  padding: 15px 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.loader-tag-skeleton {
+  height: 32px;
+  border-radius: 4px;
+}
+
+.loader-tag-skeleton:nth-child(1) { width: 70px; }
+.loader-tag-skeleton:nth-child(2) { width: 60px; }
 
 /* Categories Section Skeleton */
 .categories-section-title-skeleton {

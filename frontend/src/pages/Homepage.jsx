@@ -7,6 +7,7 @@ import ModsSection from "../components/Modsection";
 import "../styles/Homepage.css";
 import AppSection from "../components/AppSection";
 import { setCanonicalTag, buildCanonicalUrl } from "../utils/canonicalUtils";
+import { updateMetaTags } from '../utils/metaUtils';
 
 const TrendingModsSkeleton = () => {
   return (
@@ -75,7 +76,6 @@ const ModsSectionSkeleton = ({ title }) => {
   );
 };
 
-
 function Home() {
   const [categories, setCategories] = useState([]);
   const [browseAll, setBrowseAll] = useState([]);
@@ -96,6 +96,12 @@ function Home() {
 
   useEffect(() => {
     setCanonicalTag(buildCanonicalUrl("/"));
+
+    // Set meta tags for homepage
+    updateMetaTags(
+      "ModsCraft - Download Minecraft Mods, Maps & Resource Packs",
+      "Download the latest Minecraft mods, maps, and resource packs. Enhance your Minecraft experience with our curated collection of high-quality modifications."
+    );
 
     const fetchData = async () => {
       setLoadingData(true);
@@ -157,7 +163,6 @@ function Home() {
         )}
       </main>
       <div className="main-content-container">
-
         <SearchBar />
         {loading ? (
           <>

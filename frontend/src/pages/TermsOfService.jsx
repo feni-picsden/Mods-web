@@ -3,10 +3,15 @@ import { Link } from "react-router-dom";
 import "../styles/PrivacyPolicy.css";
 import { FaChevronRight } from "react-icons/fa";
 import { setCanonicalTag, buildCanonicalUrl } from "../utils/canonicalUtils";
+import { updateMetaTags } from '../utils/metaUtils';
 
 function TermsOfService() {
   useEffect(() => {
-    setCanonicalTag(buildCanonicalUrl('/terms-of-use'));
+    setCanonicalTag(buildCanonicalUrl('/terms-of-service'));
+    updateMetaTags(
+      "Terms of Service - ModsCraft",
+      "Read our terms of service to understand the rules and guidelines for using ModsCraft's Minecraft mod platform."
+    );
   }, []);
 
   return (
